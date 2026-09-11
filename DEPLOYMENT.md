@@ -31,12 +31,21 @@ Use a deliberate database migration if those records need to be transferred.
 The application administrator interface remains `/admin`. Django's separate
 maintenance interface is `/django-admin/` in the combined deployment (locally,
 when using separate Vite and Django servers, Django's interface stays `/admin/`).
-Registration creates regular accounts. To create the application administrator,
-run `python manage.py create_admin` against the hosted database with `ADMIN_EMAIL`
-and `ADMIN_INITIAL_PASSWORD` supplied securely in that command's environment.
-The command changes the named account's password; run it deliberately, never on
-every deploy. Render's free service has no remote shell, so this requires an
-authorized local database connection or a service plan with shell access.
+Registration creates regular accounts. To create a new application administrator
+on Render (including the free tier), add `ADMIN_EMAIL` and a strong
+`ADMIN_INITIAL_PASSWORD` in the **web service's Environment settings**, then save
+and deploy. Startup runs `create_admin --if-missing`: it creates the account only
+when that email does not already exist. Sign in at `/admin/login` with those
+credentials. Remove `ADMIN_INITIAL_PASSWORD` from Render after successful setup.
+Never commit the password or put it into `render.yaml`.
+
+Later deployments preserve existing passwords, account status and roles. If the
+email is already registered, startup logs a skip message and changes nothing.
+To deliberately recover or promote an existing account, run
+`python manage.py create_admin` without `--if-missing` against the hosted database
+with credentials supplied in the command's environment. That recovery resets the
+named account's password. It requires an authorized local database connection or
+a service plan with remote shell access.
 
 ## Free-tier limitations and email
 
