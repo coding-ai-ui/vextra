@@ -1,0 +1,43 @@
+import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { ArrowUpRight, Menu, LogOut, Search, Bookmark, Bell, ChevronDown, Settings, UserRound, LayoutDashboard, GitCompareArrows } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useProduct } from '../context/ProductContext';
+import api, { errorMessage } from '../Services/api';
+import { useToast } from '../context/ToastContext';
+import Dialog from './Dialog';
+import GlobalSearch from './GlobalSearch';
+export function Brand({ light = false }) { return <Link to="/" aria-label="Vestra home" className={`brand ${light ? 'brand-light' : ''}`}><svg width="29" height="31" viewBox="0 0 29 31" fill="none" aria-hidden="true"><path d="M1 3h8l7 17-4 10L1 3Z" fill="currentColor"/><path d="M18 3h9L16 30h-8L18 3Z" fill="currentColor" opacity=".65"/></svg><span>vestra<span className="brand-period">.</span></span></Link>; }
+export default function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const { comparison, notifications, notificationError, notificationLoading, refreshNotifications } = useProduct();
+  const { toast } = useToast();
+  const [menuPath, setMenuPath] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const [notificationPath, setNotificationPath] = useState(null);
+  const [marking, setMarking] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const account = useRef(null);
+  const accountButton = useRef(null);
+  const location = useLocation();
+  const menu = menuPath === location.pathname;
+  const notifying = notificationPath === location.pathname;
+  const setMenu = open => setMenuPath(open ? location.pathname : null);
+  const setNotifying = open => setNotificationPath(open ? location.pathname : null);
+  useEffect(() => { if (account.current) account.current.open = false; }, [location.pathname]);
+  useEffect(() => { const scroll = () => setScrolled(window.scrollY > 30); scroll(); window.addEventListener('scroll', scroll, { passive: true }); return () => window.removeEventListener('scroll', scroll); }, []);
+  useEffect(() => {
+    const key = event => {
+      const typing = event.target.matches('input, textarea, select, [contenteditable="true"]');
+      if ((event.key === '/' && !typing) || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k')) { event.preventDefault(); setSearching(open => !open); }
+      if (event.key === 'Escape' && account.current?.open) { account.current.open = false; accountButton.current?.focus(); }
+    };
+    const outside = event => { if (account.current && !account.current.contains(event.target)) account.current.open = false; };
+    document.addEventListener('keydown', key); document.addEventListener('pointerdown', outside);
+    return () => { document.removeEventListener('keydown', key); document.removeEventListener('pointerdown', outside); };
+  }, []);
+  const links = <><NavLink to="/projects">Projects</NavLink><NavLink to="/how-it-works">How it works</NavLink>{isAuthenticated && <NavLink to="/dashboard">Dashboard</NavLink>}</>;
+  const mark = async id => { setMarking(true); try { if (id) await api.patch(`/community/notifications/${id}/`, { read: true }); else await api.post('/community/notifications/read-all/'); await refreshNotifications(); window.dispatchEvent(new Event('vestra:data-changed')); } catch (error) { toast({ title: 'Could not mark notification', message: errorMessage(error) }); } finally { setMarking(false); } };
+  const name = user?.first_name || user?.username || '';
+  return <><header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}><div className="container nav-inner"><Brand/><nav className="desktop-nav" aria-label="Main navigation">{links}</nav><div className="nav-account"><button className="icon-button nav-search-button" title="Search (/ or Ctrl K)" aria-label="Open global search" onClick={() => setSearching(true)}><Search size={19}/><kbd>/</kbd></button>{isAuthenticated ? <><Link to="/saved" className="icon-button nav-saved-button" aria-label="Saved projects" title="Saved projects"><Bookmark size={18}/></Link><button className="icon-button notification-bell" aria-label={`Notifications${notifications.unread_count ? `, ${notifications.unread_count} unread` : ''}`} onClick={() => { setNotifying(true); refreshNotifications(); }}><Bell size={19}/>{notifications.unread_count > 0 && <span className="notification-badge">{notifications.unread_count > 99 ? '99+' : notifications.unread_count}</span>}</button><details className="account-dropdown" ref={account}><summary ref={accountButton} aria-label="Account menu"><span className={`avatar avatar-${user?.avatar || 'sage'}`}>{name.slice(0,1).toUpperCase()}</span><ChevronDown size={13}/></summary><nav aria-label="Your account"><div className="account-dropdown-heading"><strong>{name}</strong><small>Your space to explore</small></div><Link to="/profile"><UserRound size={16}/>My profile</Link><Link to="/portfolio"><LayoutDashboard size={16}/>Simulated portfolio</Link><Link to="/following"><Bell size={16}/>Following</Link><Link to="/compare"><GitCompareArrows size={16}/>Compare projects</Link><Link to="/settings"><Settings size={16}/>Settings</Link>{user?.role === 'admin' && <Link to="/admin"><LayoutDashboard size={16}/>Administration</Link>}<button onClick={logout}><LogOut size={16}/>Log out</button></nav></details></> : <><Link className="login-link" to="/login">Log in</Link><Link className="btn btn-primary btn-small" to="/register">Get started<ArrowUpRight size={16}/></Link></>}</div><button className="icon-button menu-toggle" aria-label="Open menu" aria-expanded={menu} onClick={() => setMenu(true)}><Menu/></button></div></header><Dialog open={menu} onClose={() => setMenu(false)} title="A world of possibility." className="mobile-menu-dialog"><nav className="mobile-menu-links" aria-label="Mobile navigation" onClick={() => setMenu(false)}><NavLink to="/">Home</NavLink>{links}<NavLink to="/compare">Compare{comparison.length > 0 && ` · ${comparison.length}`}</NavLink>{isAuthenticated ? <><NavLink to="/saved">Saved projects</NavLink><NavLink to="/following">Following</NavLink><NavLink to="/portfolio">Portfolio</NavLink><NavLink to="/profile">Profile</NavLink><NavLink to="/settings">Settings</NavLink>{user.role === 'admin' && <NavLink to="/admin">Administration</NavLink>}<button onClick={logout}>Log out</button></> : <><NavLink to="/login">Log in</NavLink><NavLink to="/register">Get started</NavLink></>}<NavLink to="/about">About Vestra</NavLink></nav></Dialog><GlobalSearch open={searching} onClose={() => setSearching(false)}/><Dialog open={notifying} onClose={() => setNotifying(false)} title="Your latest possibilities." description="Replies, reactions, and updates from projects you follow." className="notification-dialog"><div className="notification-toolbar"><span>{notifications.unread_count} unread</span><button className="text-link" disabled={marking || !notifications.unread_count} onClick={() => mark()}>{marking ? 'Updating…' : 'Mark all as read'}</button></div>{notificationError ? <div role="alert"><p>{notificationError}</p><button className="text-link" onClick={refreshNotifications}>Try again</button></div> : notificationLoading && !notifications.results.length ? <div className="skeleton skeleton-title" role="status" aria-label="Loading notifications"/> : notifications.results.length ? <div className="notification-preview-list">{notifications.results.slice(0, 5).map(item => <article key={item.id} className={item.read ? '' : 'is-unread'}><Bell size={17}/><div><Link to={item.url || '/notifications'} onClick={() => { setNotifying(false); if (!item.read) mark(item.id); }}>{item.title}</Link><p>{item.message}</p><small>{new Date(item.created_at).toLocaleDateString()}</small></div>{!item.read && <button className="icon-button" disabled={marking} title="Mark as read" aria-label={`Mark ${item.title} as read`} onClick={() => mark(item.id)}><span className="unread-dot"/></button>}</article>)}</div> : <div className="notification-empty"><Bell size={27}/><h3>A quiet moment.</h3><p>Follow a project or join a discussion to hear what happens next.</p><Link to="/projects" className="text-link" onClick={() => setNotifying(false)}>Explore projects <ArrowUpRight size={16}/></Link></div>}<Link className="btn btn-secondary notification-view-all" to="/notifications" onClick={() => setNotifying(false)}>View all notifications <ArrowUpRight size={16}/></Link></Dialog>{comparison.length > 0 && <div className="comparison-dock"><GitCompareArrows size={18}/><span>{comparison.length} of 4 projects</span><Link to="/compare">Compare <ArrowUpRight size={16}/></Link></div>}</>;
+}

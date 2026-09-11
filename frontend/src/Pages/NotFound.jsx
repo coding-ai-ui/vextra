@@ -1,0 +1,3 @@
+import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
+export default function NotFound() { return <section className="container not-found"><span className="eyebrow">A NEW DIRECTION / 404</span><div className="not-found-number" aria-hidden="true">404<span>↗</span></div><h1>This opportunity doesn’t exist.</h1><p>The page you’re looking for may have moved.<br/>There are still plenty of ideas to explore.</p><div className="button-row"><Link className="btn btn-primary" to="/projects">Explore projects<ArrowUpRight size={18}/></Link><Link className="btn btn-secondary" to="/">Return home</Link></div></section>; }

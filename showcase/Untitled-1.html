@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="Still is an independent architecture and interiors studio. Thoughtful spaces, natural materials, and room for the everyday.">
+  <title>still. — Spaces for a slower life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;450;500;550;600;650;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--paper:#f5f3ed;--ink:#292d26;--muted:#74776c;--line:#d8d9cf;--olive:#dce2cf;--forest:#303b2e;--accent:#dcff88;--ease:cubic-bezier(.22,1,.36,1);--gutter:clamp(24px,5.2vw,100px)}
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:100px}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif;-webkit-font-smoothing:antialiased}
+    body:has(dialog[open]){overflow:hidden}
+    ::selection{background:#d5e9b3;color:var(--ink)}
+    button,input,textarea,select{font:inherit}
+    button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
+    button,a{touch-action:manipulation}
+    a{color:inherit;text-decoration:none}
+    button{color:inherit;cursor:pointer}
+    button:disabled{cursor:default;opacity:.4}
+    button{border:0}
+    img{display:block;width:100%;height:100%;object-fit:cover}
+    svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;flex:none}
+    h1,h2,h3,p{margin:0}
+    h1,h2,h3{font-family:"Manrope",sans-serif;font-weight:500}
+    a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid #71824a;outline-offset:5px}
+    [hidden]{display:none!important}
+    .skip-link{position:fixed;top:10px;left:20px;padding:14px 20px;background:var(--accent);z-index:100;transform:translateY(-160%)}
+    .skip-link:focus{transform:translateY(0)}
+    .eyebrow{font-size:10px;letter-spacing:.15em;font-weight:600;text-transform:uppercase;line-height:1.6}
+    .dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;flex-shrink:0}
+    .section-label{display:flex;gap:12px;align-items:center}
+    .serif{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;letter-spacing:-.065em}
+    .round-button{border:1px solid currentColor;border-radius:50%;height:48px;width:48px;display:inline-flex;align-items:center;justify-content:center;background:transparent;transition:background .25s,transform .25s,color .25s}
+    .round-button:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(-7deg)}
+    .pill{min-height:46px;border-radius:100px;padding:0 21px;display:inline-flex;align-items:center;justify-content:center;gap:30px;font-size:12px;font-weight:500;transition:background .25s,color .25s,transform .25s}
+    .pill:hover{transform:translateY(-3px)}
+    .pill-dark{background:var(--ink);color:var(--paper)}
+    .pill-dark:hover{background:#4d5b40}
+    .text-link{display:inline-flex;gap:32px;align-items:center;border-bottom:1px solid;padding:0 0 10px;font-size:13px;font-weight:500}
+    .text-link svg{transition:transform .3s var(--ease)}
+    .text-link:hover svg{transform:translate(4px,-4px)}
+    #scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;background:#839669;transform:scaleX(0);transform-origin:left;z-index:80;pointer-events:none}
+    .site-header{height:92px;padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;background:var(--paper);transition:height .35s,box-shadow .35s}
+    .site-header.is-scrolled{height:92px;box-shadow:0 1px 0 #292d2614}
+    .logo{font-family:"Manrope",sans-serif;font-size:46px;letter-spacing:-4px;font-weight:650;line-height:1;padding-right:4px}
+    .logo sup{font-family:"DM Sans",sans-serif;font-size:10px;letter-spacing:0;vertical-align:top;position:relative;top:8px;margin-left:7px}
+    .desktop-nav{display:flex;gap:34px;align-items:center;margin-left:76px}
+    .desktop-nav a{font-size:12px;position:relative;padding:10px 0}
+    .desktop-nav a::after{position:absolute;content:"";height:1px;background:currentColor;bottom:4px;left:0;right:0;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+    .desktop-nav a:hover::after{transform:scaleX(1)}
+    .desktop-nav sup{font-size:8px;position:relative;top:-3px;margin-left:3px;color:var(--muted)}
+    #menu-toggle{display:none;background:transparent;width:44px;height:44px;align-items:center;justify-content:center}
+    #mobile-menu{position:fixed;top:76px;left:0;right:0;padding:20px var(--gutter) 32px;background:var(--paper);box-shadow:0 12px 20px #00000012}
+    #mobile-menu a{display:block;font-family:"Manrope",sans-serif;font-size:26px;padding:15px 0;border-bottom:1px solid var(--line)}
+    .hero{height:min(790px,calc(100svh - 110px));min-height:590px;margin:0 20px;position:relative;overflow:hidden;background:#787e6a;color:white;isolation:isolate}
+    .hero-media{position:absolute;inset:-8% 0;z-index:-3;transform:translateY(var(--parallax-y,0px))}
+    .hero-media img{object-position:50% 53%;animation:hero-zoom 2s var(--ease) both}
+    .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,22,17,.53) 0%,rgba(20,27,16,.15) 68%),linear-gradient(0deg,rgba(15,24,14,.34),transparent 35%);z-index:-1}
+    .hero-content{height:100%;padding:49px calc(var(--gutter) - 20px) 36px;display:flex;flex-direction:column;align-items:flex-start}
+    .hero-top{width:100%;display:flex;align-items:center;justify-content:space-between}
+    .hero-top .section-label{font-size:9px;letter-spacing:.17em}
+    .hero-top .dot{background:var(--accent)}
+    .hero-edition{font-size:9px;letter-spacing:.08em;opacity:.8}
+    .hero h1{font-size:clamp(72px,8.75vw,148px);line-height:.99;letter-spacing:-.072em;margin-top:auto;padding-top:54px}
+    .hero-line{overflow:hidden;display:block;padding:0 10px 8px 0;margin-bottom:-8px}
+    .hero-line>span{display:block;animation:rise 1.3s var(--ease) both}
+    .hero-line:nth-child(2)>span{animation-delay:.13s}
+    .hero-subtitle{font-size:14px;line-height:1.7;max-width:290px;margin-top:27px;color:#ffffffe0;animation:fade-in 1.6s .3s both}
+    .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;width:100%;margin-top:auto;padding-top:40px}
+    .hero-cta{background:var(--paper);color:var(--ink);gap:45px;min-height:50px;padding-left:23px;padding-right:18px;font-size:12px}
+    .hero-cta:hover{background:var(--accent)}
+    .hero-caption{display:flex;align-items:center;gap:24px;font-size:10px;line-height:1.7}
+    .hero-caption .small-line{height:32px;width:1px;background:#ffffff5c}
+    .hero-caption span{display:block;opacity:.65;font-size:9px}
+    .scroll-cue{display:flex;align-items:center;gap:9px;margin-left:auto;margin-right:55px;opacity:.8}
+    .scroll-cue svg{width:15px;height:15px;animation:nudge 2s ease-in-out infinite}
+    .intro-strip{display:flex;align-items:center;justify-content:space-between;padding:26px var(--gutter);border-bottom:1px solid var(--line);font-size:10px}
+    .intro-strip p{color:var(--muted)}
+    .intro-strip .availability{display:flex;gap:8px;align-items:center}
+    .availability .dot{background:#819366;width:5px;height:5px}
+    .studio{padding:126px var(--gutter) 112px;display:grid;grid-template-columns:1fr 2.3fr;gap:4vw}
+    .studio .section-label{align-self:start;margin-top:14px}
+    .studio h2{font-size:clamp(34px,4.15vw,68px);line-height:1.2;letter-spacing:-.05em;max-width:910px}
+    .studio h2 .serif{color:#7a846d}
+    .studio-bottom{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;margin-top:44px}
+    .studio-bottom>p{color:var(--muted);font-size:14px;line-height:1.9;max-width:310px}
+    .studio-values{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:25px}
+    .studio-values>p{color:var(--muted);font-size:14px;line-height:1.9;max-width:310px}
+    .gallery-section{background:var(--olive);position:relative;height:calc(100svh + var(--gallery-distance,0px))}
+    .gallery-sticky{position:sticky;top:0;height:100svh;min-height:680px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding-top:85px;padding-bottom:35px}
+    .gallery-heading{display:flex;align-items:flex-end;justify-content:space-between;padding:0 var(--gutter);margin-bottom:30px;gap:20px}
+    .gallery-heading h2{font-size:clamp(38px,4.2vw,68px);letter-spacing:-.055em;line-height:1.05;margin-top:15px}
+    .gallery-heading .gallery-hint{max-width:210px;color:#5d6655;font-size:12px;line-height:1.7;margin-bottom:4px}
+    .gallery-track{display:flex;gap:28px;width:max-content;padding:0 var(--gutter);transform:translate3d(var(--gallery-x,0px),0,0);will-change:transform}
+    .project-card{width:57vw;max-width:960px;flex-shrink:0}
+    .project-visual{width:100%;height:clamp(250px,43vh,540px);position:relative;overflow:hidden;background:#b2b8a6;display:block;padding:0;text-align:left}
+    .project-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#00000015,transparent 30%);pointer-events:none}
+    .project-visual img{transition:transform 1.2s var(--ease)}
+    .project-visual:hover img{transform:scale(1.045)}
+    .project-tag{position:absolute;top:20px;left:20px;border:1px solid #ffffff77;border-radius:40px;padding:7px 11px;color:white;background:#29332320;backdrop-filter:blur(10px);font-size:9px;letter-spacing:.05em}
+    .project-open{position:absolute;bottom:22px;right:22px;background:var(--paper);border:0;color:var(--ink);z-index:1;transition:transform .4s var(--ease),background .4s}
+    .project-visual:hover .project-open{transform:rotate(45deg);background:var(--accent)}
+    .project-meta{display:flex;align-items:center;justify-content:space-between;padding-top:17px}
+    .project-meta h3{font-size:26px;letter-spacing:-.04em}
+    .project-meta p{font-size:10px;color:#5d6655;text-align:right}
+    .project-meta p span{margin-left:18px}
+    .gallery-footer{padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between;margin-top:26px}
+    .gallery-meter{display:flex;align-items:center;gap:13px;font-size:10px}
+    .gallery-meter>span:last-child{color:#75806b}
+    .gallery-progress{width:115px;height:1px;background:#aab59c}
+    .gallery-progress-fill{height:1px;width:100%;background:var(--ink);transform:scaleX(.3333);transform-origin:left}
+    .gallery-controls{display:flex;gap:10px}
+    .gallery-controls .round-button{width:38px;height:38px;border-color:#99a38c}
+    .gallery-controls svg{width:16px}
+    .philosophy{padding:118px var(--gutter);display:grid;grid-template-columns:1.05fr 1fr;gap:9vw;align-items:center}
+    .philosophy-visual{height:660px;position:relative}
+    .philosophy-image{height:100%;overflow:hidden;background:#bdb6a8}
+    .philosophy-image img{height:115%;position:relative;top:-7.5%;transform:translateY(var(--parallax-y,0px));object-position:55% center}
+    .material-note{position:absolute;bottom:30px;left:30px;right:30px;padding:17px 20px;background:#f5f3ede8;backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;font-size:10px}
+    .material-note p{line-height:1.7}
+    .material-note span{color:var(--muted);font-size:9px}
+    .material-note svg{height:28px;width:28px;stroke-width:1}
+    .philosophy-content h2{font-size:clamp(40px,4.7vw,76px);letter-spacing:-.065em;line-height:1.08;margin-top:25px}
+    .philosophy-content>p{color:var(--muted);font-size:14px;line-height:1.9;margin-top:30px;max-width:340px}
+    .principles{margin-top:39px;border-top:1px solid var(--line)}
+    .principles details{border-bottom:1px solid var(--line)}
+    .principles summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:19px 0;font-size:13px}
+    .principles summary::-webkit-details-marker{display:none}
+    .principles summary .number{font-size:9px;color:var(--muted);margin-right:12px}
+    .principles summary svg{width:16px;height:16px;transition:transform .25s}
+    .principles details[open] summary svg{transform:rotate(45deg)}
+    .principles details>p{font-size:12px;color:var(--muted);line-height:1.9;padding:0 30px 20px}
+    .interlude{height:660px;position:relative;isolation:isolate;color:var(--paper);overflow:hidden;background:#43523e;display:flex;align-items:center;justify-content:center;text-align:center}
+    .interlude-media{position:absolute;inset:-12% 0;z-index:-2;transform:translateY(var(--parallax-y,0px))}
+    .interlude-media img{object-position:center 56%;filter:brightness(.62)}
+    .interlude::after{content:"";position:absolute;inset:0;background:#223a202e;z-index:-1}
+    .interlude-content{padding:40px 24px;width:100%}
+    .interlude .eyebrow{font-size:9px;letter-spacing:.18em}
+    .interlude h2{font-size:clamp(52px,7.5vw,118px);letter-spacing:-.055em;line-height:1.06;margin:34px 0 28px}
+    .interlude-content>p:last-child{font-size:13px;line-height:1.9;opacity:.8;max-width:300px;margin:auto}
+    .interlude-footer{position:absolute;bottom:28px;left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;font-size:9px;letter-spacing:.12em;opacity:.7}
+    .journal{padding:116px var(--gutter) 122px}
+    .journal-heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px}
+    .journal h2{font-size:clamp(40px,4.3vw,70px);letter-spacing:-.06em;line-height:1.15;margin-top:15px}
+    .journal-heading>p{font-size:12px;color:var(--muted);max-width:190px;line-height:1.8;margin-bottom:5px}
+    .journal-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:36px;align-items:start}
+    .journal-card:nth-child(2){margin-top:80px}
+    .journal-image{height:350px;overflow:hidden;background:#e3dfd3}
+    .journal-card:nth-child(2) .journal-image{height:280px}
+    .journal-image img{transition:transform 1s var(--ease)}
+    .journal-card:hover img{transform:scale(1.035)}
+    .journal-card .eyebrow{display:flex;gap:16px;margin:20px 0 11px;color:var(--muted);font-size:9px}
+    .journal-card h3{font-size:clamp(22px,2vw,32px);letter-spacing:-.035em;line-height:1.25}
+    .journal-card>p{font-size:13px;color:var(--muted);line-height:1.8;margin-top:13px;max-width:440px}
+    .journal-card details{margin-top:22px}
+    .journal-card summary{list-style:none;display:inline-flex;align-items:center;gap:38px;padding-bottom:8px;border-bottom:1px solid #adb2a4;font-size:11px;cursor:pointer}
+    .journal-card summary::-webkit-details-marker{display:none}
+    .journal-card summary svg{width:16px;height:16px;transition:transform .3s}
+    .journal-card details[open] summary svg{transform:rotate(90deg)}
+    .journal-card details p{font-size:13px;color:var(--muted);line-height:1.9;max-width:460px;padding:20px 0 0}
+    .contact{background:var(--forest);color:var(--paper);padding:55px var(--gutter) 0;position:relative;overflow:hidden}
+    .contact-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:35px;border-bottom:1px solid #ffffff25}
+    .contact-top .availability{display:flex;align-items:center;gap:8px;color:#c3cfb7;font-size:10px}
+    .contact-top .dot{background:var(--accent)}
+    .contact-main{padding:60px 0 66px;display:flex;align-items:center;justify-content:space-between;gap:40px}
+    .contact h2{font-size:clamp(80px,12vw,200px);line-height:.95;letter-spacing:-.07em}
+    .contact-info{max-width:245px;margin-right:3vw;margin-top:60px}
+    .contact-info p{font-size:13px;color:#c6cebf;line-height:1.9;margin-bottom:27px}
+    .contact-info .pill{background:var(--accent);color:var(--ink);gap:23px;white-space:nowrap}
+    .contact-info .pill:hover{background:var(--paper)}
+    .footer{border-top:1px solid #ffffff25;padding:25px 0;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#c1c9ba;gap:20px}
+    .footer-links{display:flex;gap:24px}
+    .footer a:hover{color:white}
+    .footer-top{display:flex;gap:10px;align-items:center}
+    .footer-top svg{height:13px;width:13px}
+    .footer-credit{font-size:8px;opacity:.65}
+    dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(820px,calc(100% - 40px));max-height:90svh;overflow-y:auto;overscroll-behavior:contain}
+    dialog::backdrop{background:#182019b3;backdrop-filter:blur(8px)}
+    dialog[open]{animation:modal-in .35s var(--ease)}
+    .dialog-close{position:absolute;right:16px;top:16px;z-index:2;background:var(--paper);width:40px;height:40px;border:0}
+    .dialog-image{height:320px;background:#d8d9cf}
+    .dialog-body{padding:35px 40px 42px}
+    .dialog-body h2{font-size:40px;letter-spacing:-.045em;margin:10px 0 17px}
+    .dialog-body>p{font-size:14px;line-height:1.8;color:var(--muted)}
+    .project-detail-row{display:flex;gap:25px;flex-wrap:wrap;padding-top:25px;margin-top:25px;border-top:1px solid var(--line);font-size:11px}
+    #contact-dialog{width:min(600px,calc(100% - 32px))}
+    #contact-dialog .dialog-body{padding:45px}
+    #contact-dialog h2{margin-top:15px;max-width:400px}
+    .form-intro{font-size:12px!important;line-height:1.7!important}
+    #contact-form{display:grid;gap:19px;margin-top:25px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    #contact-form label{display:grid;gap:8px;font-size:11px}
+    #contact-form input,#contact-form textarea,#contact-form select{border:1px solid #cdcec2;background:transparent;border-radius:0;padding:12px;color:var(--ink);width:100%;min-width:0;font-size:13px}
+    #contact-form textarea{resize:vertical;min-height:100px}
+    #contact-form .pill{justify-self:start;margin-top:2px}
+    #contact-result{margin-top:22px;background:var(--olive);padding:20px;font-size:13px;line-height:1.8}
+    #contact-result p{margin-bottom:14px}
+    #contact-result .text-link{font-size:11px;gap:15px}
+    #contact-reset{display:block;margin-top:15px;padding:0;background:transparent;text-decoration:underline;font-size:11px}
+    .form-note{font-size:10px!important;margin-top:16px;line-height:1.7!important}
+    .js [data-reveal]{opacity:0;transform:translateY(38px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--delay,0ms)}
+    .js [data-reveal].is-visible{opacity:1;transform:translateY(0)}
+    @keyframes rise{from{transform:translateY(115%)}to{transform:translateY(0)}}
+    @keyframes fade-in{from{opacity:0}to{opacity:1}}
+    @keyframes hero-zoom{from{transform:scale(1.09)}to{transform:scale(1)}}
+    @keyframes nudge{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
+    @keyframes modal-in{from{opacity:0;transform:translateY(15px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(min-width:1800px){.hero{max-height:960px;height:calc(100svh - 115px)}.hero h1{font-size:9vw}.hero-subtitle{font-size:17px}.eyebrow{font-size:12px}}
+    @media(max-height:760px) and (min-width:900px){.gallery-sticky{min-height:0;padding-top:85px;padding-bottom:20px}.gallery-heading{margin-bottom:22px}.gallery-heading h2{font-size:44px;margin-top:8px}.project-visual{height:39vh;min-height:180px}.gallery-footer{margin-top:18px}.project-meta{padding-top:12px}.project-meta h3{font-size:23px}}
+    @media(max-width:1100px){.desktop-nav{gap:25px;margin-left:0}.studio{grid-template-columns:1fr 2.5fr;gap:25px}.studio-bottom{gap:30px}.philosophy{gap:6vw}.philosophy-visual{height:570px}.contact-info{margin-right:0}.hero h1{font-size:10vw}.scroll-cue{margin-right:30px}}
+    @media(max-width:899px){
+      .gallery-section{height:auto!important;padding:65px 0 42px}
+      .gallery-sticky{height:auto;min-height:0;position:relative;padding:0;overflow:visible}
+      .gallery-track{width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;transform:none!important;will-change:auto;gap:20px;padding:0 var(--gutter);scroll-padding-left:var(--gutter)}
+      .gallery-track::-webkit-scrollbar{display:none}
+      .project-card{width:76vw;max-width:none;scroll-snap-align:start}
+      .project-visual{height:380px}
+      .gallery-heading{margin-bottom:30px}
+      .gallery-heading .gallery-hint{max-width:160px}
+      .gallery-footer{margin-top:25px}
+      .studio{padding-top:85px;padding-bottom:85px;grid-template-columns:1fr;gap:30px}
+      .studio h2{font-size:48px;max-width:700px}
+      .studio-bottom{margin-top:30px;gap:50px}
+      .philosophy{padding-top:80px;padding-bottom:80px;gap:5vw}
+      .philosophy-visual{height:530px}
+      .philosophy-content h2{font-size:44px}
+      .philosophy-content>p{font-size:12px}
+      .material-note{left:15px;right:15px;bottom:15px;padding:12px}
+      .principles summary{font-size:12px}
+      .interlude{height:550px}
+      .journal{padding-top:80px;padding-bottom:80px}
+      .journal-grid{gap:24px}
+      .journal-image{height:280px}
+      .journal-card:nth-child(2) .journal-image{height:230px}
+    }
+    @media(max-width:640px){
+      :root{--gutter:24px}
+      html{scroll-padding-top:85px}
+      .site-header,.site-header.is-scrolled{height:76px}
+      .logo{font-size:41px;letter-spacing:-3px}
+      .desktop-nav,.header-cta{display:none}
+      #menu-toggle{display:flex}
+      .hero{margin:0 12px;height:calc(100svh - 88px);min-height:580px;max-height:820px}
+      .hero-content{padding:30px 24px 27px}
+      .hero-top .section-label{font-size:8px;gap:8px;letter-spacing:.12em}
+      .hero-edition{display:none}
+      .hero h1{font-size:clamp(61px,12.5vw,82px);padding-top:60px;letter-spacing:-.07em;line-height:1.02}
+      .hero-subtitle{font-size:13px;max-width:240px;margin-top:26px}
+      .hero-media img{object-position:63% center}
+      .hero::before{background:linear-gradient(90deg,#0e1c15a8,#15291c20),linear-gradient(0deg,#12251a60,transparent 40%)}
+      .hero-bottom{padding-top:52px;gap:20px;align-items:center}
+      .hero-cta{min-height:47px;gap:25px;padding:0 17px;font-size:11px}
+      .hero-caption{font-size:9px;gap:0;text-align:right}
+      .hero-caption .small-line,.hero-caption .hero-number,.scroll-cue{display:none}
+      .hero-caption span{font-size:8px}
+      .intro-strip{padding-top:21px;padding-bottom:21px;gap:20px;font-size:9px}
+      .intro-strip>p{max-width:140px;line-height:1.7}
+      .intro-strip .availability{font-size:8px;gap:5px}
+      .studio{padding-top:65px;padding-bottom:66px;gap:28px}
+      .studio .section-label{margin-top:0}
+      .studio h2{font-size:36px;line-height:1.22;letter-spacing:-.055em}
+      .studio-bottom{grid-template-columns:1fr;gap:20px;margin-top:25px}
+      .studio-bottom>p,.studio-values>p{max-width:none;font-size:13px;line-height:1.85}
+      .studio-values{gap:26px}
+      .studio-values .text-link{font-size:12px}
+      .gallery-section{padding-top:54px}
+      .gallery-heading h2{font-size:38px;margin-top:12px}
+      .gallery-heading .gallery-hint{display:none}
+      .gallery-track{gap:16px}
+      .project-card{width:83vw}
+      .project-visual{height:330px}
+      .project-visual img{object-position:center}
+      .project-tag{top:14px;left:14px;font-size:8px}
+      .project-open{width:40px;height:40px;bottom:15px;right:15px}
+      .project-meta{align-items:flex-start;gap:10px}
+      .project-meta h3{font-size:23px}
+      .project-meta p{font-size:9px;line-height:1.8}
+      .project-meta p span{display:block;margin-left:0;font-size:8px}
+      .philosophy{padding-top:66px;padding-bottom:64px;grid-template-columns:1fr;gap:43px}
+      .philosophy-visual{height:430px}
+      .material-note{left:22px;right:22px;bottom:22px;padding:15px}
+      .philosophy-content h2{font-size:48px;margin-top:20px}
+      .philosophy-content>p{font-size:13px;max-width:none;margin-top:24px}
+      .principles{margin-top:27px}
+      .principles summary{font-size:13px;padding:20px 0}
+      .interlude{height:530px}
+      .interlude h2{font-size:57px;margin:30px 0}
+      .interlude-footer{font-size:8px;letter-spacing:.06em}
+      .journal{padding-top:66px;padding-bottom:66px}
+      .journal-heading{margin-bottom:30px}
+      .journal h2{font-size:40px}
+      .journal-heading>p{display:none}
+      .journal-grid{grid-template-columns:1fr;gap:38px}
+      .journal-card:nth-child(2){margin-top:0}
+      .journal-image,.journal-card:nth-child(2) .journal-image{height:290px}
+      .journal-card h3{font-size:27px}
+      .journal-card>p{font-size:12px}
+      .contact{padding-top:30px}
+      .contact-top{padding-bottom:28px}
+      .contact-top .eyebrow{font-size:8px}
+      .contact-top .availability{font-size:8px}
+      .contact-main{padding:45px 0 44px;display:block}
+      .contact h2{font-size:clamp(76px,18.5vw,119px)}
+      .contact-info{margin-top:35px;max-width:280px}
+      .contact-info p{font-size:12px;margin-bottom:22px}
+      .footer{flex-wrap:wrap;font-size:8px;gap:20px;padding:24px 0}
+      .footer-links{gap:18px}
+      .footer-credit{order:4;font-size:8px;width:100%;border-top:1px solid #ffffff17;padding-top:18px}
+      .dialog-image{height:230px}
+      .dialog-body,#contact-dialog .dialog-body{padding:30px 24px}
+      .dialog-body h2{font-size:34px}
+      .dialog-body>p{font-size:13px}
+      .form-row{grid-template-columns:1fr;gap:19px}
+    }
+    @media(max-width:380px){.hero h1{font-size:15vw}.hero-caption{display:none}.contact-top{gap:18px}.contact-top .availability{max-width:85px;line-height:1.6}.contact h2{font-size:22vw}}
+    html:not(.js) .gallery-section{height:auto;padding:70px 0 40px}
+    html:not(.js) .gallery-sticky{position:relative;height:auto;min-height:0;padding:0}
+    html:not(.js) .gallery-track{width:100%;overflow-x:auto;transform:none;scroll-snap-type:x mandatory}
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      .js [data-reveal]{opacity:1;transform:none}
+      [data-parallax]{transform:none!important}
+      .gallery-section{height:auto!important;padding:80px 0 40px}
+      .gallery-sticky{position:relative;height:auto;min-height:0;padding:0;overflow:visible}
+      .gallery-track{width:100%;overflow-x:auto;transform:none!important;scroll-snap-type:x mandatory;scroll-padding-left:var(--gutter);will-change:auto}
+      .project-card{scroll-snap-align:start}
+    }
+    @media print{.site-header{position:static}.hero{height:600px}.gallery-section{height:auto!important}.gallery-sticky{height:auto;position:static}.gallery-track{width:100%;flex-wrap:wrap;transform:none!important}.project-card{width:100%;margin-bottom:25px}.js [data-reveal]{opacity:1;transform:none}.dialog,.gallery-controls,#scroll-progress{display:none}}
+  </style>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="arrow-up-right" viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14"/></symbol>
+      <symbol id="arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+      <symbol id="arrow-left" viewBox="0 0 24 24"><path d="M20 12H4m6-6-6 6 6 6"/></symbol>
+      <symbol id="arrow-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6"/></symbol>
+      <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    </defs>
+  </svg>
+  <header class="site-header" id="site-header">
+    <a class="logo" href="#top" aria-label="Still studio home">still.<sup>®</sup></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#studio">The studio</a>
+      <a href="#spaces">Selected spaces<sup>03</sup></a>
+      <a href="#philosophy">Our approach</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <a class="pill pill-dark header-cta" href="#contact">Let’s talk <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></a>
+    <button id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></svg></button>
+    <nav id="mobile-menu" aria-label="Mobile navigation" hidden><a href="#studio">The studio</a><a href="#spaces">Selected spaces</a><a href="#philosophy">Our approach</a><a href="#journal">Journal</a><a href="#contact">Let’s talk ↗</a></nav>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-media" data-parallax="0.17"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&amp;fit=crop&amp;w=2400&amp;q=85" alt="A sunlit living room with natural timber, soft linen seating, and sculptural furnishings" fetchpriority="high" width="2400" height="1600"></div>
+      <div class="hero-content">
+        <div class="hero-top"><p class="section-label eyebrow"><span class="dot"></span>Independent architecture &amp; interiors</p><p class="hero-edition">CONSIDERED SPACES. EVERYDAY LIVING.</p></div>
+        <h1 id="hero-title"><span class="hero-line"><span>A little less.</span></span><span class="hero-line"><span>A little <em class="serif">better.</em></span></span></h1>
+        <p class="hero-subtitle">Spaces that let life happen.<br>Thoughtfully designed. Naturally felt.</p>
+        <div class="hero-bottom">
+          <a class="pill hero-cta" href="#spaces">Discover our spaces <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></a>
+          <a href="#studio" class="scroll-cue eyebrow">Scroll to feel it <svg aria-hidden="true"><use href="#arrow-down"/></svg></a>
+          <div class="hero-caption"><div class="hero-number">01 / 03</div><div class="small-line"></div><p>The art of feeling at home<span>STILL — A NEW PERSPECTIVE</span></p></div>
+        </div>
+      </div>
+    </section>
+    <div class="intro-strip"><p>An independent studio. A considered point of view.</p><div class="availability"><span class="dot"></span>Thoughtful by nature, since 2018</div></div>
+    <section class="studio" id="studio" aria-labelledby="studio-title">
+      <p class="section-label eyebrow" data-reveal><span class="dot"></span>01 / The studio</p>
+      <div><h2 id="studio-title" data-reveal>Good design doesn’t ask for attention. It makes you<br class="desktop-break"> <em class="serif">feel at home.</em></h2>
+        <div class="studio-bottom"><p data-reveal>We’re still. A small architecture and interiors studio with a simple belief: the spaces we live in should make life feel a little better.</p><div class="studio-values" data-reveal style="--delay:100ms"><p>Honest materials. Natural light. Room to breathe. We bring a considered touch to the places where your everyday unfolds.</p><a class="text-link" href="#philosophy">A little more about us <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></a></div></div>
+      </div>
+    </section>
+    <section class="gallery-section" id="spaces" aria-labelledby="spaces-title">
+      <div class="gallery-sticky">
+        <div class="gallery-heading"><div><p class="section-label eyebrow"><span class="dot"></span>02 / Selected spaces</p><h2 id="spaces-title">A sense of <em class="serif">place.</em></h2></div><p class="gallery-hint">Different places. A shared feeling.<br>A few spaces we’ve put our hearts into.</p></div>
+        <div class="gallery-track" tabindex="0" role="region" aria-label="Selected projects, scroll to explore">
+          <article class="project-card">
+            <button class="project-visual" data-project="0" data-title="Casa Brisa" data-location="Comporta, Portugal" data-description="A quiet coastal retreat shaped by the rhythm of the Atlantic. Soft limewash, pale oak, and generous openings bring the landscape into everyday life. An imagined home for long lunches, open doors, and unhurried mornings." data-image="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" data-details="Residential · Architecture &amp; interiors · 240 m² · Concept 2025" aria-label="Explore Casa Brisa project">
+              <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Airy neutral interior with sculptural furniture and an open dining space" loading="lazy" width="1400" height="950"><span class="project-tag">RESIDENTIAL · 2025</span><span class="round-button project-open" aria-hidden="true"><svg><use href="#arrow-up-right"/></svg></span>
+            </button><div class="project-meta"><h3>Casa Brisa</h3><p>Comporta, Portugal <span>Architecture &amp; interiors</span></p></div>
+          </article>
+          <article class="project-card">
+            <button class="project-visual" data-project="1" data-title="Quiet Form" data-location="Kyoto, Japan" data-description="A study in balance, with warm timber and tactile surfaces at its heart. This imagined city residence celebrates the small rituals of daily life: a cup of tea, a patch of sunlight, a view onto green. Every detail has room to breathe." data-image="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" data-details="Residential · Interior architecture · 185 m² · Concept 2024" aria-label="Explore Quiet Form project">
+              <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Warm contemporary living space with natural tones and carefully arranged furniture" loading="lazy" width="1400" height="950"><span class="project-tag">INTERIORS · 2024</span><span class="round-button project-open" aria-hidden="true"><svg><use href="#arrow-up-right"/></svg></span>
+            </button><div class="project-meta"><h3>Quiet Form</h3><p>Kyoto, Japan <span>Interior architecture</span></p></div>
+          </article>
+          <article class="project-card">
+            <button class="project-visual" data-project="2" data-title="The Horizon" data-location="Joshua Tree, California" data-description="An imagined desert hideaway that follows the light. Muted textures and low, generous forms echo the landscape beyond, bringing a sense of stillness indoors. A place to watch the shadows move and let the day take its own shape." data-image="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" data-details="Residential · Architecture &amp; interiors · 310 m² · Concept 2025" aria-label="Explore The Horizon project">
+              <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Minimal living room with warm neutral furnishings and natural daylight" loading="lazy" width="1400" height="950"><span class="project-tag">RESIDENTIAL · 2025</span><span class="round-button project-open" aria-hidden="true"><svg><use href="#arrow-up-right"/></svg></span>
+            </button><div class="project-meta"><h3>The Horizon</h3><p>Joshua Tree, California <span>Architecture &amp; interiors</span></p></div>
+          </article>
+        </div>
+        <div class="gallery-footer"><div class="gallery-meter" aria-label="Gallery position"><span id="gallery-current">01</span><div class="gallery-progress" aria-hidden="true"><div class="gallery-progress-fill"></div></div><span>03</span></div><div class="gallery-controls"><button class="round-button" id="gallery-prev" aria-label="Previous project"><svg aria-hidden="true"><use href="#arrow-left"/></svg></button><button class="round-button" id="gallery-next" aria-label="Next project"><svg aria-hidden="true"><use href="#arrow-right"/></svg></button></div></div>
+      </div>
+    </section>
+    <section class="philosophy" id="philosophy" aria-labelledby="philosophy-title">
+      <div class="philosophy-visual" data-reveal><div class="philosophy-image"><img src="https://images.unsplash.com/photo-1657934771872-2ded6ed63a34?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="Sunlight falling across timber doors and a tactile concrete floor" width="1000" height="1400" loading="lazy" data-parallax="0.07"></div><div class="material-note"><p>Beautiful, by nature.<br><span>Honest materials. Nothing more.</span></p><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3v30M3 18h30M7.4 7.4l21.2 21.2M7.4 28.6 28.6 7.4M12.3 4.1l11.4 27.8M4.1 12.3l27.8 11.4M4.1 23.7 31.9 12.3M12.3 31.9 23.7 4.1"/></svg></div></div>
+      <div class="philosophy-content"><p class="section-label eyebrow" data-reveal><span class="dot"></span>03 / Our approach</p><h2 id="philosophy-title" data-reveal>Less, but<br><em class="serif">meaningful.</em></h2><p data-reveal>We start by listening. To you, to the place, to the way the light moves. Then we find what matters — and give it room.</p>
+        <div class="principles" data-reveal>
+          <details open><summary><span><span class="number">01</span>Led by the way you live</span><svg aria-hidden="true"><use href="#plus"/></svg></summary><p>Before a line is drawn, we learn your rhythms. A home should fit your life, from the first coffee to the last light.</p></details>
+          <details><summary><span><span class="number">02</span>Rooted in the natural</span><svg aria-hidden="true"><use href="#plus"/></svg></summary><p>Timber that tells a story. Stone that feels good underfoot. We choose materials that grow more beautiful with time, and invite nature inside.</p></details>
+          <details><summary><span><span class="number">03</span>Made to stay with you</span><svg aria-hidden="true"><use href="#plus"/></svg></summary><p>Quiet proportions, thoughtful details, and flexible spaces. We design beyond a moment, so your surroundings can evolve with you.</p></details>
+        </div>
+      </div>
+    </section>
+    <section class="interlude" aria-labelledby="interlude-title">
+      <div class="interlude-media" data-parallax="0.11"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&amp;fit=crop&amp;w=2200&amp;q=85" alt="Soft light filtering through a quiet green forest" width="2200" height="1467" loading="lazy"></div>
+      <div class="interlude-content" data-reveal><p class="eyebrow">A thought we come back to</p><h2 id="interlude-title">The best spaces<br>make you <em class="serif">feel.</em></h2><p>Connected to the outside.<br>Comfortable on the inside. Entirely yourself.</p></div>
+      <div class="interlude-footer"><span>LESS NOISE. MORE NATURE.</span><span>THE STILL PHILOSOPHY ↗</span></div>
+    </section>
+    <section class="journal" id="journal" aria-labelledby="journal-title">
+      <div class="journal-heading" data-reveal><div><p class="section-label eyebrow"><span class="dot"></span>04 / Notes from still</p><h2 id="journal-title">Worth a <em class="serif">moment.</em></h2></div><p>Observations, inspirations, and the things we notice along the way.</p></div>
+      <div class="journal-grid">
+        <article class="journal-card" data-reveal><div class="journal-image"><img src="https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="A calm interior with tactile materials and simple natural objects" width="1200" height="800" loading="lazy"></div><div class="eyebrow"><span>Materials</span><span>3 MIN READ</span></div><h3>The beauty of things that age.</h3><p>On natural materials, the charm of imperfection, and choosing things that get better with time.</p><details><summary>Read the story <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></summary><p>A timber table carries the trace of every shared meal. Brass softens where a hand reaches for it each morning. These changes aren’t flaws to hide; they are the marks of a life being lived.</p><p>We look for materials that welcome this kind of history. Solid wood can be repaired. Natural stone reveals its character in changing light. Linen grows softer with use. Their beauty is never quite finished.</p><p>Choosing well often means choosing fewer things, and giving them time. The most enduring room is rarely the most pristine. It’s the one that feels unmistakably yours.</p></details></article>
+        <article class="journal-card" data-reveal style="--delay:130ms"><div class="journal-image"><img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="A thoughtfully furnished living room filled with daylight" width="1000" height="750" loading="lazy"></div><div class="eyebrow"><span>Perspective</span><span>2 MIN READ</span></div><h3>A home, not a showroom.</h3><p>Why the most beautiful spaces leave a little room for real life.</p><details><summary>Read the story <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></summary><p>A favorite chair pulled toward the window. A stack of books that keeps growing. The good bowl left on the kitchen counter. A home finds its character in the habits of the people who live there.</p><p>Our job is to create a thoughtful foundation for those moments: comfortable proportions, intuitive movement, and light where it’s needed. The rest belongs to you.</p><p>Leave a wall for something you haven’t found yet. Keep a corner for the unexpected. A home is a conversation that continues long after the drawings are put away.</p></details></article>
+      </div>
+    </section>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="contact-top"><p class="section-label eyebrow"><span class="dot"></span>Every good space starts with a conversation</p><span class="availability"><span class="dot"></span>Room for new ideas</span></div>
+      <div class="contact-main"><h2 id="contact-title" data-reveal>Let’s make<br><em class="serif">room.</em></h2><div class="contact-info" data-reveal style="--delay:100ms"><p>For your ideas. For your everyday.<br>For something that feels like you.<br>Tell us what you have in mind.</p><button class="pill" id="contact-open">Start a conversation <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></button></div></div>
+      <footer class="footer"><p>© <span id="year">2026</span> Still Studio</p><div class="footer-links"><a href="#studio">The studio</a><a href="#spaces">Our spaces</a><a href="#journal">Journal</a></div><p class="footer-credit">A concept studio · Photography via <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a></p><a class="footer-top" href="#top">Back to the top <svg aria-hidden="true" style="transform:rotate(180deg)"><use href="#arrow-down"/></svg></a></footer>
+    </section>
+  </main>
+  <dialog id="project-dialog" aria-labelledby="project-title" aria-describedby="project-description"><button class="round-button dialog-close" data-close-dialog aria-label="Close project"><svg aria-hidden="true"><use href="#close"/></svg></button><div class="dialog-image"><img id="project-image" alt="" width="1400" height="900"></div><div class="dialog-body"><p class="eyebrow" id="project-location"></p><h2 id="project-title"></h2><p id="project-description"></p><div class="project-detail-row" id="project-details"></div></div></dialog>
+  <dialog id="contact-dialog" aria-labelledby="contact-dialog-title"><button class="round-button dialog-close" data-close-dialog aria-label="Close conversation form"><svg aria-hidden="true"><use href="#close"/></svg></button><div class="dialog-body"><p class="eyebrow">A space for your ideas</p><h2 id="contact-dialog-title">Good things start <em class="serif">here.</em></h2><p class="form-intro">A few details to give your idea a little shape. Create a project brief you can save and share.</p><form id="contact-form"><div class="form-row"><label>Your name<input name="name" autocomplete="name" placeholder="Alex Morgan" required maxlength="100"></label><label>Email address<input name="email" type="email" autocomplete="email" placeholder="alex@example.com" required maxlength="200"></label></div><label>What are you imagining?<select name="type"><option>A new home</option>A thoughtful renovation</option>An interior transformation</option>Something a little different</option></select></label><label>Tell us a little about it<textarea name="project" placeholder="The place, the feeling, the possibilities…" required minlength="10" maxlength="5000"></textarea></label><button class="pill pill-dark" type="submit">Create my project brief <svg aria-hidden="true"><use href="#arrow-up-right"/></svg></button></form><div id="contact-result" role="status" hidden><p data-result-message>Your brief is ready. Save a copy to start the conversation.</p><a id="draft-email" class="text-link" download="still-project-brief.txt">Download your project brief <svg aria-hidden="true"><use href="#arrow-down"/></svg></a><button id="contact-reset" type="button">Edit your details</button></div><p class="form-note">This is a concept website. Your details stay in your browser; nothing is sent.</p></div></dialog>
+  <!-- The complete interaction script is embedded below. -->
+  <script>
+(() => {
+  'use strict';
+  document.documentElement.classList.add('js');
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const desktop = window.matchMedia('(min-width: 900px)');
+  const header = $('#site-header');
+  const pageProgress = $('#scroll-progress');
+  const gallery = $('#spaces');
+  const track = $('.gallery-track');
+  const cards = $$('.project-card');
+  const galleryCurrent = $('#gallery-current');
+  const galleryProgress = $('.gallery-progress-fill');
+  const previousButton = $('#gallery-prev');
+  const nextButton = $('#gallery-next');
+  const parallaxItems = $$('[data-parallax]');
+  let galleryDistance = 0;
+  let galleryStart = 0;
+  let projectStops = [];
+  let currentProject = 0;
+  let animationFrame = 0;
+  let resizeFrame = 0;
+
+  const isPinned = () => desktop.matches && !reducedMotion.matches;
+  const motionBehavior = () => reducedMotion.matches ? 'auto' : 'smooth';
+
+  function setCurrentProject(index, progress) {
+    currentProject = index;
+    if (galleryCurrent) galleryCurrent.textContent = String(index + 1).padStart(2, '0');
+    if (galleryProgress) galleryProgress.style.transform = `scaleX(${progress})`;
+    if (previousButton) previousButton.disabled = index === 0;
+    if (nextButton) nextButton.disabled = index >= cards.length - 1;
+  }
+
+  function updateGallery(position) {
+    if (!track || !cards.length) return;
+    const maximum = isPinned() ? galleryDistance : Math.max(0, track.scrollWidth - track.clientWidth);
+    const offset = clamp(position, 0, maximum);
+    let nearestIndex = 0;
+    let nearestDistance = Infinity;
+    projectStops.forEach((stop, index) => {
+      const distance = Math.abs(offset - stop);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+    // Keep the last project reachable when the final scroll stop is short.
+    if (maximum > 0 && offset >= maximum - 2) nearestIndex = cards.length - 1;
+    const progress = cards.length > 1 ? (nearestIndex + 1) / cards.length : 1;
+    setCurrentProject(nearestIndex, progress);
+  }
+
+  function renderScroll() {
+    animationFrame = 0;
+    const scrollY = window.scrollY;
+    const documentDistance = document.documentElement.scrollHeight - window.innerHeight;
+    if (pageProgress) pageProgress.style.transform = `scaleX(${documentDistance > 0 ? clamp(scrollY / documentDistance, 0, 1) : 0})`;
+    if (header) header.classList.toggle('is-scrolled', scrollY > 60);
+
+    if (gallery && track && isPinned()) {
+      const offset = clamp(scrollY - galleryStart, 0, galleryDistance);
+      gallery.style.setProperty('--gallery-x', `${-offset}px`);
+      updateGallery(offset);
+    }
+
+    if (!reducedMotion.matches) {
+      parallaxItems.forEach(element => {
+        const rectangle = (element.parentElement || element).getBoundingClientRect();
+        if (rectangle.bottom < 0 || rectangle.top > window.innerHeight) return;
+        const speed = Number.parseFloat(element.dataset.parallax) || 0.12;
+        const offset = clamp(-rectangle.top * speed, -80, 80);
+        element.style.setProperty('--parallax-y', `${offset.toFixed(2)}px`);
+      });
+    }
+  }
+
+  function queueScroll() {
+    if (!animationFrame) animationFrame = window.requestAnimationFrame(renderScroll);
+  }
+
+  function measureGallery() {
+    resizeFrame = 0;
+    if (gallery && track && cards.length) {
+      const pinned = isPinned();
+      gallery.classList.toggle('is-pinned', pinned);
+      galleryDistance = pinned ? Math.max(0, track.scrollWidth - window.innerWidth) : 0;
+      gallery.style.setProperty('--gallery-distance', `${Math.ceil(galleryDistance)}px`);
+      gallery.style.setProperty('--gallery-x', '0px');
+      if (pinned) track.scrollLeft = 0;
+      galleryStart = gallery.getBoundingClientRect().top + window.scrollY;
+      const maximum = pinned ? galleryDistance : Math.max(0, track.scrollWidth - track.clientWidth);
+      const firstOffset = cards[0].offsetLeft;
+      projectStops = cards.map(card => clamp(card.offsetLeft - firstOffset, 0, maximum));
+      if (projectStops.length > 1) projectStops[projectStops.length - 1] = maximum;
+      if (!pinned) updateGallery(track.scrollLeft);
+    }
+    queueScroll();
+  }
+
+  function queueMeasure() {
+    if (!resizeFrame) resizeFrame = window.requestAnimationFrame(measureGallery);
+  }
+
+  function moveGallery(direction) {
+    if (!gallery || !track || !cards.length) return;
+    const targetIndex = clamp(currentProject + direction, 0, cards.length - 1);
+    const destination = projectStops[targetIndex] || 0;
+    if (isPinned()) {
+      window.scrollTo({ top: galleryStart + destination, behavior: motionBehavior() });
+    } else {
+      track.scrollBy({ left: destination - track.scrollLeft, behavior: motionBehavior() });
+    }
+  }
+
+  previousButton?.addEventListener('click', () => moveGallery(-1));
+  nextButton?.addEventListener('click', () => moveGallery(1));
+  track?.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    moveGallery(event.key === 'ArrowRight' ? 1 : -1);
+  });
+  track?.addEventListener('focusin', event => {
+    if (!isPinned()) return;
+    const card = event.target.closest('.project-card');
+    if (!card) return;
+    const index = cards.indexOf(card);
+    const bounds = card.getBoundingClientRect();
+    if (bounds.left < 0 || bounds.right > window.innerWidth) {
+      window.scrollTo({ top: galleryStart + projectStops[index], behavior: 'instant' });
+      const sticky = $('.gallery-sticky');
+      if (sticky) sticky.scrollLeft = 0;
+      queueScroll();
+    }
+  });
+  track?.addEventListener('scroll', () => {
+    if (!isPinned()) updateGallery(track.scrollLeft);
+  }, { passive: true });
+  window.addEventListener('scroll', queueScroll, { passive: true });
+  window.addEventListener('resize', queueMeasure, { passive: true });
+  window.addEventListener('load', queueMeasure);
+  desktop.addEventListener('change', queueMeasure);
+  if ('ResizeObserver' in window && track) {
+    const galleryObserver = new ResizeObserver(queueMeasure);
+    galleryObserver.observe(track);
+    cards.forEach(card => galleryObserver.observe(card));
+  }
+  document.fonts?.ready.then(queueMeasure);
+
+  const revealItems = $$('[data-reveal]');
+  let revealObserver;
+  function configureMotion() {
+    revealObserver?.disconnect();
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+      revealItems.forEach(element => element.classList.add('is-visible'));
+    } else {
+      revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+      revealItems.filter(element => !element.classList.contains('is-visible')).forEach(element => revealObserver.observe(element));
+    }
+    if (reducedMotion.matches) {
+      parallaxItems.forEach(element => element.style.setProperty('--parallax-y', '0px'));
+    }
+    queueMeasure();
+  }
+  reducedMotion.addEventListener('change', configureMotion);
+
+  const menuToggle = $('#menu-toggle');
+  const mobileMenu = $('#mobile-menu');
+  function closeMenu(returnFocus = false) {
+    if (!menuToggle || !mobileMenu) return;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open menu');
+    mobileMenu.hidden = true;
+    if (returnFocus) menuToggle.focus();
+  }
+  menuToggle?.addEventListener('click', () => {
+    if (!mobileMenu) return;
+    const willOpen = menuToggle.getAttribute('aria-expanded') !== 'true';
+    menuToggle.setAttribute('aria-expanded', String(willOpen));
+    menuToggle.setAttribute('aria-label', willOpen ? 'Close menu' : 'Open menu');
+    mobileMenu.hidden = !willOpen;
+  });
+  mobileMenu?.addEventListener('click', event => {
+    if (event.target instanceof Element && event.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && mobileMenu && !mobileMenu.hidden) closeMenu(true);
+  });
+  desktop.addEventListener('change', event => {
+    if (event.matches) closeMenu();
+  });
+
+  const projects = [
+    {
+      title: 'Casa Brisa',
+      location: 'Comporta, Portugal',
+      description: 'A home shaped by the Atlantic light. Quiet volumes, warm limestone, and open courtyards create a gentle conversation between the architecture and its coastal landscape.',
+      details: 'Residential · 2025 · 340 m²'
+    },
+    {
+      title: 'Quiet Form',
+      location: 'Kyoto, Japan',
+      description: 'An intimate retreat around a secluded garden. Natural timber and textured walls frame changing light, bringing a sense of stillness to the rhythms of everyday life.',
+      details: 'Private retreat · 2024 · 210 m²'
+    },
+    {
+      title: 'The Horizon',
+      location: 'Joshua Tree, California',
+      description: 'Low, sculptural forms settle into the desert. Deep shade, honest materials, and generous views connect a series of intimate spaces to the open landscape beyond.',
+      details: 'Residential · 2025 · 420 m²'
+    }
+  ];
+
+  const projectDialog = $('#project-dialog');
+  const contactDialog = $('#contact-dialog');
+  let dialogTrigger;
+
+  function openDialog(dialog, trigger) {
+    if (!dialog || dialog.open) return;
+    dialogTrigger = trigger;
+    closeMenu();
+    dialog.showModal();
+    document.documentElement.classList.add('dialog-open');
+  }
+
+  function openProject(index, trigger) {
+    if (!projectDialog || !projects[index]) return;
+    const card = cards[index];
+    const project = { ...projects[index], ...(card?.dataset || {}), ...(trigger?.dataset || {}) };
+    const title = $('#project-title');
+    const location = $('#project-location');
+    const description = $('#project-description');
+    const details = $('#project-details');
+    const image = $('#project-image');
+    if (title) title.textContent = project.title;
+    if (location) location.textContent = project.location;
+    if (description) description.textContent = project.description;
+    if (details) details.textContent = project.details;
+    if (image) {
+      const cardImage = card?.querySelector('img');
+      const source = project.image || cardImage?.currentSrc || cardImage?.src;
+      if (source) image.src = source;
+      image.alt = cardImage?.alt || `${project.title}, ${project.location}`;
+    }
+    openDialog(projectDialog, trigger);
+  }
+
+  $$('[data-project]').forEach(trigger => {
+    trigger.addEventListener('click', () => openProject(Number(trigger.dataset.project), trigger));
+  });
+  $('#contact-open')?.addEventListener('click', event => openDialog(contactDialog, event.currentTarget));
+  $$('[data-close-dialog]').forEach(button => {
+    button.addEventListener('click', () => button.closest('dialog')?.close());
+  });
+  [projectDialog, contactDialog].filter(Boolean).forEach(dialog => {
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      const outside = event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
+      if (outside) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('dialog-open');
+      if (dialogTrigger?.isConnected) dialogTrigger.focus({ preventScroll: true });
+    });
+  });
+
+  const contactForm = $('#contact-form');
+  const contactResult = $('#contact-result');
+  const draftEmail = $('#draft-email');
+  let briefUrl;
+  contactForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!contactForm.reportValidity()) return;
+    const values = new FormData(contactForm);
+    const name = String(values.get('name') || '').trim();
+    const email = String(values.get('email') || '').trim();
+    const project = String(values.get('project') || '').trim();
+    const type = String(values.get('type') || 'To be explored').trim();
+    const body = `STILL — PROJECT BRIEF\n\nPrepared: ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}\n\nName: ${name}\nEmail: ${email}\nProject type: ${type}\n\nTHE VISION\n\n${project}\n\n---\nPrepared locally with the STILL concept website. No information has been sent.`;
+    if (briefUrl) URL.revokeObjectURL(briefUrl);
+    briefUrl = URL.createObjectURL(new Blob([body], { type: 'text/plain;charset=utf-8' }));
+    if (draftEmail) {
+      draftEmail.href = briefUrl;
+      draftEmail.download = 'still-project-brief.txt';
+    }
+    if (contactResult) {
+      contactResult.hidden = false;
+      const message = $('[data-result-message]', contactResult);
+      if (message) message.textContent = 'Your brief is ready. Save a copy to start the conversation.';
+      contactResult.setAttribute('tabindex', '-1');
+      contactResult.focus({ preventScroll: true });
+      contactResult.scrollIntoView({ block: 'nearest', behavior: motionBehavior() });
+    }
+  });
+
+  function resetContactResult() {
+    if (contactResult) contactResult.hidden = true;
+    if (draftEmail) draftEmail.removeAttribute('href');
+    if (briefUrl) URL.revokeObjectURL(briefUrl);
+    briefUrl = undefined;
+  }
+  $('#contact-reset')?.addEventListener('click', () => {
+    resetContactResult();
+    $('[name="name"]', contactForm || document)?.focus();
+  });
+  contactForm?.addEventListener('input', resetContactResult);
+  const year = $('#year');
+  if (year) year.textContent = String(new Date().getFullYear());
+
+  configureMotion();
+  measureGallery();
+})();
+
+</script>
+</body>
+</html>
