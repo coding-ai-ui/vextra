@@ -2,6 +2,9 @@
 
 **Invest in what matters.** An academic investment simulation platform built on the existing React + Vite frontend and Django REST Framework backend. All projects, funding figures and estimated outcomes are fictional. No real money moves through Vestra.
 
+## enter the website
+**the Url of this website is** https://vextra-93ix.onrender.com/
+
 ## Run the existing workspace
 
 Dependencies, the local backend environment, SQLite migrations and ten fictional projects are already configured. Open two PowerShell terminals from this folder.
