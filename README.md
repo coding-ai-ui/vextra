@@ -113,6 +113,6 @@ npm run build
 
 With both servers running, `npm run test:e2e` exercises the actual browser journey and captures desktop/tablet/mobile screenshots. The suite uses Playwright with installed Chrome, or Playwright's Chromium (`npx playwright install chromium` if needed). It creates isolated local QA accounts and deletes exactly those accounts and their simulations afterward. This includes a second account for verifying portfolio isolation when switching sessions across browser tabs. Generated reports and screenshots are under `artifacts/e2e/` and ignored by Git. For a nonlocal API, do not run the local cleanup workflow unchanged.
 
-To serve the compiled frontend locally, run `npm run preview` and open http://127.0.0.1:4173 while Django is running. Public deployment is outside this local academic MVP; the backend documentation records the production environment requirements.
+To serve the compiled frontend locally, run `npm run preview` and open http://127.0.0.1:4173 while Django is running. For public hosting of both frontend and backend on Render, see [DEPLOYMENT.md](DEPLOYMENT.md) and the root `render.yaml` Blueprint.
 
 **Simulation estimate — not a guaranteed return. For educational demonstration only.**

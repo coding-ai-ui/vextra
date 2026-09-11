@@ -1,6 +1,7 @@
 """Vestra's Django API. Local configuration is loaded from backend/.env."""
 
 import os
+import dj_database_url
 from datetime import timedelta
 from pathlib import Path
 
@@ -18,6 +19,12 @@ if not SECRET_KEY:
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
     "DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]"
 ).split(",") if host.strip()]
+RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "")
+if RENDER_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_HOSTNAME)
+
+SERVE_FRONTEND = os.environ.get("SERVE_FRONTEND", "false").lower() == "true"
+FRONTEND_DIST = BASE_DIR.parent / "frontend" / "dist"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -37,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -63,6 +71,19 @@ DATABASES = {"default": {
     "NAME": BASE_DIR / "db.sqlite3",
     "OPTIONS": {"timeout": 20},
 }}
+if os.environ.get("DATABASE_URL"):
+    DATABASES["default"] = dj_database_url.parse(
+        os.environ["DATABASE_URL"], conn_max_age=60, conn_health_checks=True,
+    )
+elif os.environ.get("RENDER") == "true":
+    raise ImproperlyConfigured("DATABASE_URL is required on Render; SQLite is not persistent there.")
+
+# A database-backed cache shares API throttle counters across Gunicorn workers.
+if os.environ.get("DJANGO_DATABASE_CACHE", "false").lower() == "true":
+    CACHES = {"default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "vextra_cache",
+    }}
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -97,18 +118,37 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
+if SERVE_FRONTEND:
+    WHITENOISE_ROOT = FRONTEND_DIST
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
+SECURE_SSL_REDIRECT = os.environ.get("DJANGO_SECURE_SSL_REDIRECT", str(not DEBUG)).lower() == "true"
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+# Only trust this header behind Render's managed HTTPS proxy (or an equivalent
+# proxy that replaces client-supplied forwarded headers).
+if os.environ.get("DJANGO_TRUST_PROXY", "false").lower() == "true":
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.environ.get(
+    "CSRF_TRUSTED_ORIGINS", ""
+).split(",") if origin.strip()]
+if RENDER_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_HOSTNAME}")
 
 # The bundled catalogue is explicitly fictional. Disable to hide demo projects.
 DEMO_MODE = os.environ.get("VEXTRA_DEMO_MODE", "true").lower() == "true"
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://127.0.0.1:5173").rstrip("/")
+FRONTEND_URL = os.environ.get(
+    "FRONTEND_URL", f"https://{RENDER_HOSTNAME}" if RENDER_HOSTNAME else "http://127.0.0.1:5173"
+).rstrip("/")
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.filebased.EmailBackend")
 EMAIL_FILE_PATH = BASE_DIR.parent / "artifacts" / "emails"
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "Vextra <accounts@vextra.local>")

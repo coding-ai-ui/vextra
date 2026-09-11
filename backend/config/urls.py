@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.http import JsonResponse
 from django.conf import settings
+from .views import frontend, health
 
 
 def api_test(request):
@@ -12,8 +13,9 @@ def api_test(request):
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("django-admin/" if settings.SERVE_FRONTEND else "admin/", admin.site.urls),
 
+    path("api/health/", health),
     path("api/test/", api_test),
     path("api/users/", include("users.urls")),
     path("api/investments/", include("investments.urls")),
@@ -25,6 +27,10 @@ urlpatterns = [
         include("projects.urls")
     ),
 ]
+
+if settings.SERVE_FRONTEND:
+    # Keep API and missing asset requests as real 404s. React owns /admin/.
+    urlpatterns.append(re_path(r"^(?!(?:api|django-admin|static|assets)(?:/|$))(?!.*\.[^/]+/?$).*$", frontend))
 
 admin.site.site_header = "Vestra · Simulation administration"
 admin.site.site_title = "Vestra Admin"
